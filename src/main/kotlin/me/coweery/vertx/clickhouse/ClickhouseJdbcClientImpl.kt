@@ -2,11 +2,15 @@ package me.coweery.vertx.clickhouse
 
 import io.reactivex.Completable
 import io.reactivex.Single
+import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import io.vertx.reactivex.core.Vertx
+import ru.yandex.clickhouse.ClickHouseArray
 import ru.yandex.clickhouse.ClickHouseDataSource
+import ru.yandex.clickhouse.util.ClickHouseArrayUtil
 import java.sql.ResultSet
 import java.sql.Timestamp
+import java.util.TimeZone
 import java.util.UUID
 
 class ClickhouseJdbcClientImpl(
@@ -94,6 +98,16 @@ class ClickhouseJdbcClientImpl(
             when (this) {
                 is UUID -> put(key, toString())
                 is Timestamp -> put(key, toInstant())
+                is ClickHouseArray -> put(
+                    key,
+                    JsonArray(
+                        ClickHouseArrayUtil.arrayToString(
+                            array,
+                            TimeZone.getDefault(),
+                            TimeZone.getDefault()
+                        )
+                    )
+                )
                 else -> put(key, this)
             }
         }

@@ -105,7 +105,13 @@ class ClickhouseJdbcClientImpl(
                             array,
                             TimeZone.getDefault(),
                             TimeZone.getDefault()
-                        )
+                        ).let {
+                            if (this@with.baseTypeName == "String"){
+                                it.replace("'","\"")
+                            } else {
+                                it
+                            }
+                        }
                     )
                 )
                 else -> put(key, this)

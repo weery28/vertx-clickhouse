@@ -106,8 +106,8 @@ class ClickhouseJdbcClientImpl(
                             TimeZone.getDefault(),
                             TimeZone.getDefault()
                         ).let {
-                            if (this@with.baseTypeName == "String"){
-                                it.replace("'","\"")
+                            if (this@with.baseTypeName == "String") {
+                                it.replace("'", "\"")
                             } else {
                                 it
                             }
